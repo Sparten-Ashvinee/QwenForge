@@ -86,10 +86,10 @@ python export_model/export_onnx.PY
 
 ## Scripts
 
-### `Model/quenllm_original.py` — Baseline Inference
+#### `Model/quenllm_original.py` — Baseline Inference
 Minimal script for loading the model from HuggingFace and running a multimodal prompt (image URL + text question). Entry point for verifying the environment.
 
-### `e2e_flow/model_e2e.py` — End-to-End Tensor Trace
+#### `e2e_flow/model_e2e.py` — End-to-End Tensor Trace
 Walks the full data path from raw inputs to the merged sequence, printing every tensor shape at each stage:
 - **Stage 0** — Raw PIL image + text string
 - **Stage 1** — Processor output: `pixel_values`, `input_ids`, `image_grid_thw`
@@ -97,7 +97,7 @@ Walks the full data path from raw inputs to the merged sequence, printing every 
 - **Stage 3** — Text token embedding: `embed_tokens(248320×2048)`
 - **Stage 4** — Merged sequence (image tokens injected into text positions)
 
-### `Model/model_ttft_calc.py` — Latency & VRAM Metrics
+#### `Model/model_ttft_calc.py` — Latency & VRAM Metrics
 Measures and reports:
 | Metric | Description |
 |--------|-------------|
@@ -111,7 +111,7 @@ Measures and reports:
 
 Uses `TextIteratorStreamer` with a background thread so per-token timestamps are captured without blocking.
 
-### `gpu_optimization/model_gpu.PY` — GPU-Optimized Inference
+#### `gpu_optimization/model_gpu.PY` — GPU-Optimized Inference
 Applies five optimization techniques on top of the baseline:
 
 | Technique | Effect |
@@ -124,7 +124,7 @@ Applies five optimization techniques on top of the baseline:
 
 > **Note:** `torch.compile` is intentionally disabled. The hybrid `Qwen3_5DynamicCache` with `_update_linear_attn_mask()` is not yet supported by Dynamo's tracer. The remaining four optimizations are fully active.
 
-### `export_model/export_onnx.PY` — ONNX Export
+#### `export_model/export_onnx.PY` — ONNX Export
 Exports three self-contained subgraphs for architecture visualization in [Netron](https://netron.app):
 
 | File | Inputs | Outputs | Notes |
