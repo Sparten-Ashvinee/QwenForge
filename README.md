@@ -36,6 +36,51 @@ Qwen3_5ForConditionalGeneration
 
 </details>
 
+## Setup
+
+### Requirements
+- Python 3.10+
+- CUDA 12.4 + compatible GPU (scripts default to A100; adjust constants for other GPUs)
+- PyTorch 2.6.0 with CUDA 12.4 wheel
+
+### Installation
+
+```bash
+# 1. Install PyTorch with CUDA 12.4 support
+pip install torch==2.6.0+cu124 torchvision==0.21.0+cu124 \
+    --index-url https://download.pytorch.org/whl/cu124
+
+# 2. Install remaining dependencies
+pip install -r requirements.txt
+```
+
+### Running Scripts
+
+```bash
+# Baseline inference
+python Model/quenllm_original.py
+
+# End-to-end tensor shape trace
+python e2e_flow/model_e2e.py
+
+# Latency + VRAM profiling
+python Model/model_ttft_calc.py
+
+# Roofline analysis (saves plot to output/)
+python Model/model_performance.py
+python Model/model3_roofline.py
+
+# KV prefix caching demo
+python Model/model_cache.py
+
+# GPU-optimized inference
+python gpu_optimization/model_gpu.PY
+
+# ONNX export (outputs to /home/onnx_exports/ by default)
+python export_model/export_onnx.PY
+```
+
+---
 
 ---
 
@@ -104,52 +149,6 @@ Exports three self-contained subgraphs for architecture visualization in [Netron
 | `linear_attn_layer.onnx` | `hidden_states (S,2048)` | `hidden_states (S,2048)` | GatedDeltaNet layer |
 
 The full model cannot be traced end-to-end with `jit.trace` due to data-dependent control flow in the hybrid cache. Uses `opset_version=17` with the legacy `jit.trace` exporter (`dynamo=False`) to avoid failures on `torch.linspace` in `fast_pos_embed_interpolate`.
-
----
-
-## Setup
-
-### Requirements
-- Python 3.10+
-- CUDA 12.4 + compatible GPU (scripts default to A100; adjust constants for other GPUs)
-- PyTorch 2.6.0 with CUDA 12.4 wheel
-
-### Installation
-
-```bash
-# 1. Install PyTorch with CUDA 12.4 support
-pip install torch==2.6.0+cu124 torchvision==0.21.0+cu124 \
-    --index-url https://download.pytorch.org/whl/cu124
-
-# 2. Install remaining dependencies
-pip install -r requirements.txt
-```
-
-### Running Scripts
-
-```bash
-# Baseline inference
-python Model/quenllm_original.py
-
-# End-to-end tensor shape trace
-python e2e_flow/model_e2e.py
-
-# Latency + VRAM profiling
-python Model/model_ttft_calc.py
-
-# Roofline analysis (saves plot to output/)
-python Model/model_performance.py
-python Model/model3_roofline.py
-
-# KV prefix caching demo
-python Model/model_cache.py
-
-# GPU-optimized inference
-python gpu_optimization/model_gpu.PY
-
-# ONNX export (outputs to /home/onnx_exports/ by default)
-python export_model/export_onnx.PY
-```
 
 ---
 
