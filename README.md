@@ -36,43 +36,6 @@ Qwen3_5ForConditionalGeneration
 
 </details>
 
----
-
-## Repository Structure
-
-```
-QwenForge/
-│
-├── Model/
-│   ├── quenllm_original.py     Minimal inference — load, prompt, generate
-│   ├── model_e2e.py            ← moved to e2e_flow/
-│   ├── model_ttft_calc.py      TTFT / ITL / throughput + VRAM breakdown
-│   ├── model_performance.py    Roofline analysis: dual-bandwidth (BW1/BW2) + scatter plot
-│   ├── model3_roofline.py      Roofline model — prefill vs decode arithmetic intensity
-│   └── model_cache.py          KV prefix caching — encode image once, reuse across queries
-│
-├── e2e_flow/
-│   └── model_e2e.py            End-to-end tensor-shape trace (Stage 0 → Stage 4+)
-│
-├── export_model/
-│   └── export_onnx.PY          Export three ONNX subgraphs for Netron visualization
-│
-├── gpu_optimization/
-│   └── model_gpu.PY            GPU-optimized inference (bf16, flash-attn, TF32, CUDA streams)
-│
-├── GPU/
-│   └── gpu_basic               GPU baseline notes
-│
-├── ONNX/
-│   ├── vision_encoder.onnx     Exported vision encoder (patch_embed + 24 blocks + merger)
-│   ├── attn_layer.onnx         One full GQA attention + MLP decoder layer
-│   └── linear_attn_layer.onnx  One GatedDeltaNet linear attention + MLP decoder layer
-│
-├── output/                     Generated plots and benchmark outputs
-├── model.txt                   Full model.print() output (Qwen3_5ForConditionalGeneration)
-├── links.txt                   Reference links
-└── requirements.txt            Python dependencies
-```
 
 ---
 
