@@ -36,6 +36,8 @@ Qwen3_5ForConditionalGeneration
 
 </details>
 
+---
+
 ## Setup
 
 ### Requirements
@@ -79,8 +81,6 @@ python gpu_optimization/model_gpu.PY
 # ONNX export (outputs to /home/onnx_exports/ by default)
 python export_model/export_onnx.PY
 ```
-
----
 
 ---
 
