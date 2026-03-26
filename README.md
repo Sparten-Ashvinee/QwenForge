@@ -111,21 +111,6 @@ Measures and reports:
 
 Uses `TextIteratorStreamer` with a background thread so per-token timestamps are captured without blocking.
 
-### `Model/model_performance.py` — Dual-Bandwidth Roofline
-Plots a roofline chart with two memory bandwidth ceilings (BW1 = PCIe / throttled, BW2 = HBM peak) and marks prefill and decode operating points with their measured arithmetic intensity and achieved FLOP/s.
-
-Defaults are set for **A100 SXM** (`PEAK_FLOPS=312 TFLOP/s`, `BW2=2.0 TB/s`). Change the constants at the top of the file to match your hardware.
-
-### `Model/model3_roofline.py` — Roofline (Single Bandwidth)
-Simpler roofline variant — measures prefill and decode FLOPs/bytes directly via `torch.cuda.memory_allocated()` deltas and the `2 × num_params × seq_len` approximation (used because `FlopCounterMode` breaks on GQA with unequal Q/KV heads).
-
-### `Model/model_cache.py` — KV Prefix Caching
-Demonstrates prefix caching for multi-turn or multi-question workflows:
-1. **Encode the image once** — forward pass without generation, store the resulting `past_key_values`
-2. **Reuse the cache** for N different text questions with `copy.deepcopy` — avoids re-running the costly vision encoder and prefill for every query
-
-Useful for chatbot-style applications where the same image is queried repeatedly.
-
 ### `gpu_optimization/model_gpu.PY` — GPU-Optimized Inference
 Applies five optimization techniques on top of the baseline:
 
